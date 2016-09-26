@@ -6,9 +6,8 @@ public class Position {
 
     double x,y;
 
-    public Position(double x, double y){
-        this.x=x;
-        this.y=y;
+    public Position(){
+
     }
 
     public double getY() {
@@ -29,6 +28,11 @@ public class Position {
 
     public String toString(){
         return x + "," + y;
+    }
+
+    public void setStartPosition(double x, double y){
+        this.x=x;
+        this.y=y;
     }
 
 }
