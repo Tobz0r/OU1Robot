@@ -5,30 +5,26 @@ import java.util.Timer;
 public class RobotTimer {
 
     private long startTime = 0;
-    private boolean isRunning = false;
-    private long totalTimeElapsed = 0;
+    private long elapsedTime = 0;
     RobotTimer(){
 
     }
     public void clockStart(){
-        if(!isRunning){
-            startTime = System.nanoTime();
-            isRunning = true;
-        }
-
+        startTime = System.currentTimeMillis();
     }
+
+    /**
+     * Stop clock used by robot
+     */
     private void clockStop(){
-        if(isRunning){
-            totalTimeElapsed += System.nanoTime() - startTime;
-            isRunning = false;
-        }
+        elapsedTime = ((System.currentTimeMillis() - startTime)/1000);
     }
 
     public void endTime(){
         //stoppa klockan
         clockStop();
         //skriv ut tid
-        System.out.println(totalTimeElapsed);
+        System.out.println("Total time elapsed = " + elapsedTime +" seconds");
 
 
     }
