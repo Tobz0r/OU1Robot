@@ -1,3 +1,4 @@
+import javax.naming.ldap.Control;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -20,7 +21,7 @@ public class Robot {
     public Robot(){
         RobotCommunication robotCommunication=new RobotCommunication();
         Reader reader = new Reader();
-         controls = new Controls(robotCommunication,reader);
+        controls = new Controls(robotCommunication,reader);
     }
 
     public void createRobot(){
@@ -36,16 +37,10 @@ public class Robot {
     }
 
     public void runRobot(){
-
         while(running){
-                try {
-                    controls.calculateAngle();
-                    Thread.sleep(1000);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+            controls.calculateAngle();
+            controls.move();
+            controls.setSpeed(0,0);
             timer.endTime();
         }
 

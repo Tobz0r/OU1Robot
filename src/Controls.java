@@ -97,5 +97,13 @@ public class Controls {
     public void setDistance(double distance){
         this.distance = distance;
     }
+    public void move(){
+        try {
+            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
