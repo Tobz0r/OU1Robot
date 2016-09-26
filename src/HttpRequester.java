@@ -1,6 +1,6 @@
 
 
-import org.json.JSONObject;
+import org.json.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,7 +12,7 @@ public class HttpRequester {
 
 
     // HTTP GET request
-    private void requestGET() throws Exception {
+    public void requestGET() throws Exception {
 
         URL obj = new URL(robot_url+"/lokarria/localization");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -26,16 +26,17 @@ public class HttpRequester {
         String inputLine;
         StringBuffer response = new StringBuffer();
         while ((inputLine = in.readLine()) != null) {
-        //    response.append(inputLine);
-            System.out.println(inputLine);
-
+            response.append(inputLine);
         }
         in.close();
-       // System.out.println(response);
+        JSONObject jsonresult=new JSONObject(response.toString());
+        String x1 = jsonresult.getJSONObject("Pose").getJSONObject("Position").getString("X");
+        String y1 = jsonresult.getJSONObject("Pose").getJSONObject("Position").getString("Y");
+        Position myPosition=new Position(Double.parseDouble(x1),Double.parseDouble(y1));
     }
 
     // HTTP POST request
-    private void requestPOST(double TargetAngularSpeed, double TargetLinearSpeed) throws Exception {
+    public void requestPOST(double TargetAngularSpeed, double TargetLinearSpeed) throws Exception {
         URL obj = new URL(robot_url+"/lokarria/differentialdrive");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         //add reuqest header
