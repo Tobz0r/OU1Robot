@@ -42,8 +42,10 @@ public class Robot {
             controls.calculateAngle();
             controls.move();
             controls.setSpeed(0,0);
+            setGoalValue(controls.isDone());
             if(goalValue){
                 timer.endTime();
+                running=false;
             }
 
         }

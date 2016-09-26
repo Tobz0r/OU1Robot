@@ -63,6 +63,9 @@ public class Controls {
         System.out.println(angle);
     }
 
+    public  boolean isDone(){
+        return index==path.length;
+    }
     public double getDirection(double x, double y){
         return Math.atan2(y,x ) / Math.PI * 180;
     }
