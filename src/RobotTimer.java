@@ -4,19 +4,32 @@
 import java.util.Timer;
 public class RobotTimer {
 
+    private long startTime = 0;
+    private boolean isRunning = false;
+    private long totalTimeElapsed = 0;
     RobotTimer(){
 
     }
     public void clockStart(){
+        if(!isRunning){
+            startTime = System.nanoTime();
+            isRunning = true;
+        }
 
     }
-    public void clockStop(){
-
+    private void clockStop(){
+        if(isRunning){
+            totalTimeElapsed += System.nanoTime() - startTime;
+            isRunning = false;
+        }
     }
-    public void endTime(boolean isEnd){
+
+    public void endTime(){
         //stoppa klockan
-        //clockStop();
+        clockStop();
         //skriv ut tid
+        System.out.println(totalTimeElapsed);
+
 
     }
 }
