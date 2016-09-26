@@ -34,7 +34,6 @@ public class Reader {
             double x = (Double) aPosition.get("X");
             double y = (Double) aPosition.get("Y");
             path[index] = new Position(x, y);
-            System.out.println(path[index]);
             index++;
         }
     }
