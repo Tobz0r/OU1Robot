@@ -50,10 +50,4 @@ public class Robot {
     }
 
 
-    //CLOCKBOYS
-
-    /**
-     * Start clock used by robot
-     */
-
 }

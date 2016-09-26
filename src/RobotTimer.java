@@ -20,6 +20,9 @@ public class RobotTimer {
         elapsedTime = ((System.currentTimeMillis() - startTime)/1000);
     }
 
+    /**
+     * Stop clock then print out value of clock in seconds
+     */
     public void endTime(){
         //stoppa klockan
         clockStop();
