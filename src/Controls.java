@@ -8,19 +8,33 @@ import java.lang.Math;
 public class Controls {
 
 
-    private double angSpeed,lineSpeed,xTurnRate, yTurnRate,distance;
+    private double angSpeed,lineSpeed,xTurnRate,
+            yTurnRate,distance, xCord,yCord,angle;
     RobotCommunication robotCom;
+    Position pos;
+    Reader reader;
+    private Position[] path;
+    private int index = 0;
 
 
-    public Controls(RobotCommunication robotC){
+
+    public Controls(RobotCommunication robotC, Position pos, Reader reader){
         this.robotCom = robotC;
+        this.pos = pos;
+        this.reader = reader;
     }
 
     /**
      * Calculate angle for robot to turn
      */
     public void calculateAngle(){
+        path = reader.getPaths();
 
+        xCord = path[index].getX() - pos.getX();
+        yCord = path[index].getY() - pos.getY();
+        index++;
+        
+        angle = Math.atan2(yCord,xCord);
     }
 
     /**
