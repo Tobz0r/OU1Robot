@@ -99,7 +99,7 @@ public class Controls {
     }
     public void move(){
         try {
-            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
+            robotCom.requestPOST(angle,getDirection(xCord,yCord));
             Thread.sleep(1000);
         } catch (Exception e) {
             e.printStackTrace();
