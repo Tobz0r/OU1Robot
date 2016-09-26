@@ -3,6 +3,7 @@
 /**
  * Created by sejiaw on 2016-09-23.
  */
+import java.io.IOException;
 import java.lang.Math;
 
 public class Controls {
@@ -18,24 +19,54 @@ public class Controls {
 
 
 
-    public Controls(RobotCommunication robotC, Position pos, Reader reader){
+
+    public Controls(RobotCommunication robotC, Reader reader){
         this.robotCom = robotC;
-        this.pos = pos;
         this.reader = reader;
+        try {
+            reader.readPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        path=reader.getPaths();
     }
 
     /**
      * Calculate angle for robot to turn
      */
     public void calculateAngle(){
-        path = reader.getPaths();
+        try {
 
+            pos=robotCom.requestGET()[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         xCord = path[index].getX() - pos.getX();
         yCord = path[index].getY() - pos.getY();
+        double distance=Math.sqrt((xCord*xCord)+(yCord*yCord));
+        System.out.println("DISTANCE " + distance);
         index++;
-
+        double oriX=0,oriY=0;
+        try {
+            oriX=robotCom.requestGET()[1].getX();
+            oriY=robotCom.requestGET()[1].getY();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(oriX + "" + oriY);
         angle = Math.atan2(yCord,xCord);
+        try {
+            robotCom.requestPOST(angle,getDirection(oriX,oriY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(angle);
     }
+
+    public double getDirection(double x, double y){
+        return Math.atan2(y,x ) / Math.PI * 180;
+    }
+
 
     /**
      * Set turnrate for controls

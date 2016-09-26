@@ -10,14 +10,17 @@ public class Robot {
 
 
     //attribute
-    Position myPos;
-    Position nextPos;
+    private Position myPos;
+    private Position nextPos;
     boolean running = false;
     RobotTimer timer = new RobotTimer();
+    private Controls controls;
 
 
     public Robot(){
-
+        RobotCommunication robotCommunication=new RobotCommunication();
+        Reader reader = new Reader();
+         controls = new Controls(robotCommunication,reader);
     }
 
     public void createRobot(){
@@ -35,15 +38,14 @@ public class Robot {
     public void runRobot(){
 
         while(running){
-            for (int i = 0 ; i < 10 ; i++) {
-                System.out.println("JEBANE");
                 try {
+                    controls.calculateAngle();
                     Thread.sleep(1000);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            running = false;
+
             timer.endTime();
         }
 
