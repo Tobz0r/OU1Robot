@@ -4,19 +4,31 @@
 import java.util.Timer;
 public class RobotTimer {
 
+    private long startTime = 0;
+    private long elapsedTime = 0;
     RobotTimer(){
 
     }
     public void clockStart(){
-
+        startTime = System.currentTimeMillis();
     }
-    public void clockStop(){
 
+    /**
+     * Stop clock used by robot
+     */
+    private void clockStop(){
+        elapsedTime = ((System.currentTimeMillis() - startTime)/1000);
     }
-    public void endTime(boolean isEnd){
+
+    /**
+     * Stop clock then print out value of clock in seconds
+     */
+    public void endTime(){
         //stoppa klockan
-        //clockStop();
+        clockStop();
         //skriv ut tid
+        System.out.println("Total time elapsed = " + elapsedTime +" seconds");
+
 
     }
 }
