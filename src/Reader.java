@@ -1,5 +1,4 @@
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.Collection;
@@ -10,28 +9,32 @@ import java.util.Map;
  */
 public class Reader {
 
-    public Reader(){
+    public Reader() {
 
     }
 
-    public void readPath() throws FileNotFoundException, JSONException {
+    public void readPath() throws IOException {
         int nPoints;
-        JSONObject obj = new JSONObject("Path-around-table.json");
-
         Position[] path;
+        File pathFile = new File("Path-around-table.json");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                new FileInputStream(pathFile)));
+        ObjectMapper mapper = new ObjectMapper();
 // read the path from the file
+        Collection<Map<String, Object>> data =
+                (Collection<Map<String, Object>>) mapper.readValue(in, Collection.class);
         nPoints = data.size();
         path = new Position[nPoints];
         int index = 0;
-        for (Map<String, Object> point : data)
-        {
-            Map<String, Object> pose = (Map<String, Object>)point.get("Pose");
-            Map<String, Object> aPosition = (Map<String, Object>)pose.get("Position");
-            double x = (Double)aPosition.get("X");
-            double y = (Double)aPosition.get("Y");
+        for (Map<String, Object> point : data) {
+            Map<String, Object> pose = (Map<String, Object>) point.get("Pose");
+            Map<String, Object> aPosition = (Map<String, Object>) pose.get("Position");
+            double x = (Double) aPosition.get("X");
+            double y = (Double) aPosition.get("Y");
             path[index] = new Position(x, y);
+            System.out.println(path[index]);
+
             index++;
         }
-
     }
 }

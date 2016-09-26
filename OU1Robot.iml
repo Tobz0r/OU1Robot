@@ -8,5 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="json-1.5-20090211" level="project" />
+    <orderEntry type="library" name="jackson-core-2.8.1" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.5.0" level="project" />
+    <orderEntry type="library" name="jackson-databind-2.5.1" level="project" />
   </component>
 </module>

@@ -27,5 +27,8 @@ public class Position {
         this.x = x;
     }
 
+    public String toString(){
+        return x + "," + y;
+    }
 
 }
