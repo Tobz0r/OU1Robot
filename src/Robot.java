@@ -16,6 +16,7 @@ public class Robot {
     boolean running = false;
     RobotTimer timer = new RobotTimer();
     private Controls controls;
+    private boolean goalValue = false;
 
 
     public Robot(){
@@ -41,9 +42,20 @@ public class Robot {
             controls.calculateAngle();
             controls.move();
             controls.setSpeed(0,0);
-            timer.endTime();
+            if(goalValue){
+                timer.endTime();
+            }
+
         }
 
+    }
+
+    /**
+     * Setter for goalvalue
+     * @param goalValue if robot is in goal
+     */
+    public void setGoalValue(boolean goalValue){
+        this.goalValue = goalValue;
     }
 
 
