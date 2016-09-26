@@ -33,7 +33,7 @@ public class Controls {
         xCord = path[index].getX() - pos.getX();
         yCord = path[index].getY() - pos.getY();
         index++;
-        
+
         angle = Math.atan2(yCord,xCord);
     }
 

@@ -6,6 +6,5 @@ public class Main {
         Robot robot = new Robot();
         robot.createRobot();
         robot.runRobot();
-
     }
 }
