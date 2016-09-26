@@ -38,4 +38,12 @@ public class Reader {
             index++;
         }
     }
+
+    /**
+     * return array with positions
+     * @return array with posiitons
+     */
+    public Position[] getPaths(){
+        return path;
+    }
 }
