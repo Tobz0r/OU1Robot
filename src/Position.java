@@ -1,3 +1,5 @@
+import javafx.geometry.Pos;
+
 /**
  * Created by sejiaw on 2016-09-23.
  */
@@ -8,6 +10,10 @@ public class Position {
 
     public Position(){
 
+    }
+    public Position(double x,double y){
+        this.x=x;
+        this.y=y;
     }
 
     public double getY() {

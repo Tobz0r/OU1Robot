@@ -9,13 +9,15 @@ import java.util.Map;
  */
 public class Reader {
 
+    private Position[] path;
+
     public Reader() {
 
     }
 
     public void readPath() throws IOException {
         int nPoints;
-        Position[] path;
+
         File pathFile = new File("Path-around-table.json");
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 new FileInputStream(pathFile)));
@@ -33,7 +35,6 @@ public class Reader {
             double y = (Double) aPosition.get("Y");
             path[index] = new Position(x, y);
             System.out.println(path[index]);
-
             index++;
         }
     }
