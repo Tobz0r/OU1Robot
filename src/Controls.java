@@ -112,11 +112,11 @@ public class Controls {
         generateCarrotPoint(index);
         //calculate error
 
-        while(canIMove()){
+        while(!canIMove()){
             //jämnför robot angle mot carrot point?
             //sedan sätt nytt värde på orientationerror hela tiden
         }
-
+        //rör roboten åt givet håll
         index++;
     }
 
