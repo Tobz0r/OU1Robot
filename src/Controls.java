@@ -3,6 +3,7 @@
 /**
  * Created by sejiaw on 2016-09-23.
  */
+import java.awt.*;
 import java.io.IOException;
 import java.lang.Math;
 
@@ -14,10 +15,12 @@ public class Controls {
     RobotCommunication robotCom;
     Position pos;
     Reader reader;
+    private Position[] response;
     private Position[] path;
     private int index = 0;
     private double xCP,yCP;
     private double OriantationError;
+    private double q;
 
 
 
@@ -38,34 +41,10 @@ public class Controls {
      * Calculate angle for robot to turn
      */
     public void calculateAngle(){
-        try {
+        double deltaX=xCP-pos.getX();
+        double deltaY=yCP-pos.getY();
+        angle = Math.atan2(deltaY,deltaX);
 
-            pos=robotCom.requestGET()[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        xCord = path[index].getX() - pos.getX();
-        yCord = path[index].getY() - pos.getY();
-        double distance=Math.sqrt((xCord*xCord)+(yCord*yCord));
-        System.out.println("DISTANCE " + distance);
-        index++;
-        double oriX=0,oriY=0;
-        QuadPosition oriPos=null;
-        try {
-            oriPos=(QuadPosition)robotCom.requestGET()[1];
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        oriX=oriPos.getW();
-        oriY=oriPos.getZ();
-        System.out.println(oriX + "" + oriY);
-        angle = Math.atan2(yCord,xCord);
-        try {
-           // robotCom.requestPOST(angle,getDirection(oriX,oriY));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(angle);
     }
 
     public  boolean isDone(){
@@ -81,6 +60,7 @@ public class Controls {
         xCP = path[index].getX();
         yCP = path[index].getY();
 
+
     }
 
     /**
@@ -89,35 +69,69 @@ public class Controls {
      */
     private boolean canIMove(){
         boolean canI = false;
-        if(OriantationError==0) {
+        System.out.println(OriantationError + "");
+        if((OriantationError)==0) {
             canI = true;
         }
         return canI;
     }
 
+
+    public void getQ(){
+        QuadPosition qpos=(QuadPosition)response[1];
+        q=getBearingAngle(qpos.getW(),qpos.getZ());
+    }
     /**
      * Calculate error
      */
     public void calculateError(){
-
+        QuadPosition pos=(QuadPosition)response[1];
+        OriantationError=pos.getW();
     }
     
     /**
      * Run method for robot
      */
     public void running(){
+        try {
+            response=robotCom.requestGET();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pos=response[0];
         //calculate angle
-        calculateAngle();
-        //generate carrot point
         generateCarrotPoint(index);
-        //calculate error
+        getQ();
+        calculateAngle();
+        OriantationError=Math.atan2(Math.sin(angle-q), Math.cos(angle-q));
 
-        while(canIMove()){
+        //generate carrot point
+        //calculate error
+        try {
+            robotCom.requestPOST(OriantationError,0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        while(!canIMove()){
+            try {
+                response=robotCom.requestGET();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            getQ();
+            OriantationError=Math.atan2(Math.sin(angle-q), Math.cos(angle-q));
             //jämnför robot angle mot carrot point?
             //sedan sätt nytt värde på orientationerror hela tiden
         }
-
+        move();
         index++;
+    }
+
+    public double getBearingAngle(double x, double y){
+        double angle = 2 * Math.atan2(y, x);
+        return angle;
     }
 
     /**
@@ -146,8 +160,8 @@ public class Controls {
     public void move(){
         try {
             System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
+            robotCom.requestPOST(OriantationError,1);
             Thread.sleep(1000);
-            robotCom.requestPOST(1,1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,10 +172,7 @@ public class Controls {
         return Math.atan2(y,x ) / Math.PI * 180;
     }
 
-    public double getBearingAngle(double x, double y){
-        double angle = 2 * Math.atan2(y, x);
-        return angle * (180 / Math.PI);
-    }
+
     **
      * Set turnrate for controls
      * @param x value to turn
