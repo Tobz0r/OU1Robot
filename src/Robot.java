@@ -39,8 +39,9 @@ public class Robot {
 
     public void runRobot(){
         while(running){
-            controls.calculateAngle();
-            controls.move();
+           // controls.calculateAngle();
+          //  controls.move();
+            controls.running();
             controls.setSpeed(0,0);
             setGoalValue(controls.isDone());
             if(goalValue){
