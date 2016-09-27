@@ -32,10 +32,15 @@ public class RobotCommunication {
         JSONObject jsonresult=new JSONObject(response.toString());
         String x1 = jsonresult.getJSONObject("Pose").getJSONObject("Position").getString("X");
         String y1 = jsonresult.getJSONObject("Pose").getJSONObject("Position").getString("Y");
-        String xOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("W");
-        String yOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("Z");
+        String wOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("W");
+        String xOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("X");
+        String yOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("Y");
+        String zOrientation = jsonresult.getJSONObject("Pose").getJSONObject("Orientation").getString("Z");
         Position myPosition=new Position(Double.parseDouble(x1),Double.parseDouble(y1));
-        Position oriPosition=new Position(Double.parseDouble(xOrientation),Double.parseDouble(yOrientation));
+        Position oriPosition=new QuadPosition(Double.parseDouble(wOrientation),
+                                            Double.parseDouble(xOrientation),
+                Double.parseDouble(yOrientation),
+                Double.parseDouble(zOrientation));
         Position[] retval=new Position[2];
         retval[0]=myPosition;
         retval[1]=oriPosition;
