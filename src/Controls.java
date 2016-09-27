@@ -17,6 +17,7 @@ public class Controls {
     private Position[] path;
     private int index = 0;
     private double xCP,yCP;
+    private double OriantationError;
 
 
 
@@ -91,6 +92,13 @@ public class Controls {
 
     }
 
+    private boolean canIMove(){
+        boolean canI = false;
+        if(OriantationError==angle) {
+            canI = true;
+        }
+        return canI;
+    }
 
     /**
      * Set turnrate for controls
