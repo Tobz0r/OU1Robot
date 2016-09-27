@@ -45,7 +45,6 @@ public class Controls {
         xCord = path[index].getX() - pos.getX();
         yCord = path[index].getY() - pos.getY();
         double distance=Math.sqrt((xCord*xCord)+(yCord*yCord));
-        System.out.println("DISTANCE " + distance);
         index++;
         double oriX=0,oriY=0;
         QuadPosition oriPos=null;
@@ -57,7 +56,6 @@ public class Controls {
         }
         oriX=oriPos.getW();
         oriY=oriPos.getZ();
-        System.out.println(oriX + "" + oriY);
         //angle = Math.atan2(yCord,xCord);
         angle=getBearingAngle(oriX,oriY);
         try {
@@ -65,7 +63,6 @@ public class Controls {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(angle);
     }
 
     public  boolean isDone(){
@@ -113,6 +110,8 @@ public class Controls {
 
     }
 
+
+
     /**
      * Set distance for controls
      * @param distance distance to travel
@@ -122,7 +121,6 @@ public class Controls {
     }
     public void move(){
         try {
-            System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
             robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
             Thread.sleep(1000);
         } catch (Exception e) {
