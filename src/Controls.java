@@ -31,7 +31,7 @@ public class Controls {
         path=reader.getPaths();
     }
 
-    
+
     /**
      * Calculate angle for robot to turn
      */
@@ -114,8 +114,8 @@ public class Controls {
     public void move(){
         try {
             System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
-            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
             Thread.sleep(1000);
+            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
         } catch (Exception e) {
             e.printStackTrace();
         }
