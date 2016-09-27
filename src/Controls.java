@@ -81,6 +81,16 @@ public class Controls {
         double angle = 2 * Math.atan2(y, x);
         return angle * (180 / Math.PI);
     }
+    /**
+     * Set turnrate for controls
+     * @param x value to turn
+     * @param y value to turn
+     */
+    public void setTurnRate(double x, double y){
+        this.xTurnRate = x;
+        this.yTurnRate = y;
+
+    }
 
     /**
      * Generate a carrot point for robot to follow
@@ -92,22 +102,31 @@ public class Controls {
 
     }
 
+    /**
+     * Check if robot can move or not
+     * @return true if allowed to move else false
+     */
     private boolean canIMove(){
         boolean canI = false;
-        if(OriantationError==angle) {
+        if(OriantationError==0) {
             canI = true;
         }
         return canI;
     }
 
     /**
-     * Set turnrate for controls
-     * @param x value to turn
-     * @param y value to turn
+     * Run method for robot
      */
-    public void setTurnRate(double x, double y){
-        this.xTurnRate = x;
-        this.yTurnRate = y;
+    public void running(){
+        //calculate angle
+        calculateAngle();
+
+        //calculate error
+
+        while(canIMove()){
+            //
+        }
+
 
     }
 
