@@ -16,6 +16,7 @@ public class Controls {
     Reader reader;
     private Position[] path;
     private int index = 0;
+    private double xCP,yCP;
 
 
 
@@ -51,7 +52,6 @@ public class Controls {
         QuadPosition oriPos=null;
         try {
             oriPos=(QuadPosition)robotCom.requestGET()[1];
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,6 +72,7 @@ public class Controls {
         return index==path.length;
     }
     public double getDirection(double x, double y){
+        System.out.println("X = "+ x + " Y = " + y);
         return Math.atan2(y,x ) / Math.PI * 180;
     }
 
@@ -80,8 +81,13 @@ public class Controls {
         return angle * (180 / Math.PI);
     }
 
-    public void calculateSpeed(){
-
+    /**
+     * Generate a carrot point for robot to follow
+     * @param index of carrotpoint
+     */
+    public void generateCarrotPoint(int index){
+        xCP = path[index].getX();
+        yCP = path[index].getY();
 
     }
 
@@ -124,7 +130,7 @@ public class Controls {
         try {
             System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
             Thread.sleep(1000);
-            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
+            robotCom.requestPOST(1,1);
         } catch (Exception e) {
             e.printStackTrace();
         }
