@@ -44,8 +44,7 @@ public class Controls {
     public double calculateAngle(){
         double deltaX=xCP-pos.getX();
         double deltaY=yCP-pos.getY();
-        double angle;
-        return angle = Math.atan2(deltaY,deltaX);
+        return Math.atan2(deltaY,deltaX);
     }
 
     public  boolean isDone(){
@@ -71,13 +70,21 @@ public class Controls {
     private boolean canIMove(double angle){
         boolean canI = false;
         //System.out.println(OriantationError + "");
-        if(angle==1) {
+        double stop = 0.00;
+        if(angle==stop) {
             canI = true;
         }
         return canI;
     }
 
 
+    public double getCPX(int index){
+        return path[index+1].getX();
+    }
+
+    public double getCPY(int index){
+        return path[index+1].getY();
+    }
     public double getQX(){
         QuadPosition qpos=(QuadPosition)response[1];
         return qpos.getW();
@@ -105,28 +112,31 @@ public class Controls {
         }
         pos=response[0];
         //calculate angle
-        generateCarrotPoint(index);
+        //generateCarrotPoint(index);
         double qx = getQX();
         double qy = getQY();
-
+        double xcp = getCPX(index);
+        double ycp = getCPY(index);
         double angle = calculateAngle();
-        OrientationAngle = calculateDiffrence(qy,qx,xCP,yCP);
+        OriantationError = calculateDiffrence(qy,qx,xcp,ycp);
 
         System.out.println("OE= "+OriantationError);
-        while(!canIMove(OrientationAngle)){
+        while(!canIMove(OriantationError)){
             qx = getQX();
             qy = getQY();
-            System.out.println("OE= "+OriantationError);
-            //System.out.println("ANGLE = "+angle + " Q = "+q);
-            //System.out.println("Q = "+q);
+            angle = calculateAngle();
+            //  System.out.println("OE= "+OriantationError);
+            System.out.println("ANGLE = "+angle);
+            //System.out.println("QX = "+qx + " QY= " +qy + " CPX = " + xcp + " CPY = " + ycp);
             try {
-                robotCom.requestPOST(OriantationError,0);
+                robotCom.requestPOST(0.5,0);
                 response=robotCom.requestGET();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            OrientationAngle = calculateDiffrence(qy,qx,xCP,yCP);
+
+            OriantationError = calculateDiffrence(qy,qx,xcp,ycp);
             //jämnför robot angle mot carrot point?
             //sedan sätt nytt värde på orientationerror hela tiden
         }
@@ -134,7 +144,7 @@ public class Controls {
         index++;
     }
     public double calculateDiffrence(double qy, double qx, double cx, double cy){
-       return OriantationError=Math.sqrt((qx-cx)*(qx-cx)+(qy-cy)*(qy-cy));
+       return Math.sqrt((qx-cx)*(qx-cx)+(qy-cy)*(qy-cy));
     }
 
 /*
@@ -168,8 +178,8 @@ public class Controls {
     }
     public void move(){
         try {
-           // System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed );
-            robotCom.requestPOST(OriantationError,1);
+            System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed );
+            robotCom.requestPOST(0,1);
             Thread.sleep(1000);
             stopVehicle();
         } catch (Exception e) {
