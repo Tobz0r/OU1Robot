@@ -11,7 +11,7 @@ public class Controls {
 
 
     private double angSpeed,lineSpeed,xTurnRate,
-            yTurnRate,distance, xCord,yCord,angle;
+            yTurnRate,distance, xCord,yCord;
     RobotCommunication robotCom;
     Position pos;
     Reader reader;
@@ -19,8 +19,9 @@ public class Controls {
     private Position[] path;
     private int index = 0;
     private double xCP,yCP;
-    private double OriantationError;
-    private double q;
+    private double OriantationError, OrientationAngle;
+
+
 
 
 
@@ -40,11 +41,11 @@ public class Controls {
     /**
      * Calculate angle for robot to turn
      */
-    public void calculateAngle(){
+    public double calculateAngle(){
         double deltaX=xCP-pos.getX();
         double deltaY=yCP-pos.getY();
-        angle = Math.atan2(deltaY,deltaX);
-
+        double angle;
+        return angle = Math.atan2(deltaY,deltaX);
     }
 
     public  boolean isDone(){
@@ -67,19 +68,23 @@ public class Controls {
      * Check if robot can move or not
      * @return true if allowed to move else false
      */
-    private boolean canIMove(){
+    private boolean canIMove(double angle){
         boolean canI = false;
-        System.out.println(OriantationError + "");
-        if((OriantationError)==0) {
+        //System.out.println(OriantationError + "");
+        if(angle==0.0) {
             canI = true;
         }
         return canI;
     }
 
 
-    public void getQ(){
+    public double getQX(){
         QuadPosition qpos=(QuadPosition)response[1];
-        q=getBearingAngle(qpos.getW(),qpos.getZ());
+        return qpos.getW();
+    }
+    public double getQY(){
+        QuadPosition qpos=(QuadPosition)response[1];
+        return qpos.getZ();
     }
     /**
      * Calculate error
@@ -101,39 +106,40 @@ public class Controls {
         pos=response[0];
         //calculate angle
         generateCarrotPoint(index);
-        getQ();
-        calculateAngle();
-        OriantationError=Math.atan2(Math.sin(angle-q), Math.cos(angle-q));
+        double q = getQ();
+        double angle = calculateAngle();
+        OrientationAngle = calculateDiffrence(angle,q);
 
-        //generate carrot point
-        //calculate error
-        try {
-            robotCom.requestPOST(OriantationError,0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        while(!canIMove()){
+        System.out.println("OE= "+OriantationError);
+        while(!canIMove(OrientationAngle)){
+            q=getQ();
+            System.out.println("OE= "+OriantationError);
+            //System.out.println("ANGLE = "+angle + " Q = "+q);
+            //System.out.println("Q = "+q);
             try {
+                robotCom.requestPOST(OriantationError,0);
                 response=robotCom.requestGET();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getQ();
-            OriantationError=Math.atan2(Math.sin(angle-q), Math.cos(angle-q));
+            OrientationAngle = calculateDiffrence(angle,q);
             //jämnför robot angle mot carrot point?
             //sedan sätt nytt värde på orientationerror hela tiden
         }
         move();
         index++;
     }
+    public double calculateDiffrence(double angle, double q){
+       return OriantationError=Math.sqrt(())
+    }
 
+/*
     public double getBearingAngle(double x, double y){
         double angle = 2 * Math.atan2(y, x);
         return angle;
     }
-
+*/
     /**
      * Set speed for controls
      * @param angSpeed angular speed
@@ -159,12 +165,24 @@ public class Controls {
     }
     public void move(){
         try {
-            System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
+           // System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed );
             robotCom.requestPOST(OriantationError,1);
             Thread.sleep(1000);
+            stopVehicle();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopVehicle(){
+        try {
+            robotCom.requestPOST(0,0);
+            Thread.sleep(1000);
+            System.out.println("STOP");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 /**
     public double getDirection(double x, double y){
