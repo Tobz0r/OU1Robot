@@ -16,6 +16,8 @@ public class Controls {
     Reader reader;
     private Position[] path;
     private int index = 0;
+    private double xCP,yCP;
+    private double OriantationError;
 
 
 
@@ -31,7 +33,7 @@ public class Controls {
         path=reader.getPaths();
     }
 
-    
+
     /**
      * Calculate angle for robot to turn
      */
@@ -45,17 +47,18 @@ public class Controls {
         xCord = path[index].getX() - pos.getX();
         yCord = path[index].getY() - pos.getY();
         double distance=Math.sqrt((xCord*xCord)+(yCord*yCord));
+        System.out.println("DISTANCE " + distance);
         index++;
         double oriX=0,oriY=0;
         QuadPosition oriPos=null;
         try {
             oriPos=(QuadPosition)robotCom.requestGET()[1];
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         oriX=oriPos.getW();
         oriY=oriPos.getZ();
+        System.out.println(oriX + "" + oriY);
         //angle = Math.atan2(yCord,xCord);
         angle=getBearingAngle(oriX,oriY);
         try {
@@ -63,12 +66,14 @@ public class Controls {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(angle);
     }
 
     public  boolean isDone(){
         return index==path.length;
     }
     public double getDirection(double x, double y){
+        System.out.println("X = "+ x + " Y = " + y);
         return Math.atan2(y,x ) / Math.PI * 180;
     }
 
@@ -77,11 +82,23 @@ public class Controls {
         return angle * (180 / Math.PI);
     }
 
-    public void calculateSpeed(){
-
+    /**
+     * Generate a carrot point for robot to follow
+     * @param index of carrotpoint
+     */
+    public void generateCarrotPoint(int index){
+        xCP = path[index].getX();
+        yCP = path[index].getY();
 
     }
 
+    private boolean canIMove(){
+        boolean canI = false;
+        if(OriantationError==angle) {
+            canI = true;
+        }
+        return canI;
+    }
 
     /**
      * Set turnrate for controls
@@ -110,8 +127,6 @@ public class Controls {
 
     }
 
-
-
     /**
      * Set distance for controls
      * @param distance distance to travel
@@ -121,8 +136,9 @@ public class Controls {
     }
     public void move(){
         try {
-            robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
+            System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
             Thread.sleep(1000);
+            robotCom.requestPOST(1,1);
         } catch (Exception e) {
             e.printStackTrace();
         }
