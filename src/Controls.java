@@ -115,19 +115,28 @@ public class Controls {
     }
 
     /**
+     * Calculate error
+     */
+    public void calculateError(){
+
+    }
+    
+    /**
      * Run method for robot
      */
     public void running(){
         //calculate angle
         calculateAngle();
-
+        //generate carrot point
+        generateCarrotPoint(index);
         //calculate error
 
         while(canIMove()){
-            //
+            //jämnför robot angle mot carrot point?
+            //sedan sätt nytt värde på orientationerror hela tiden
         }
 
-
+        index++;
     }
 
     /**
