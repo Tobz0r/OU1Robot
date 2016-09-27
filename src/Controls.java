@@ -67,6 +67,11 @@ public class Controls {
         return Math.atan2(y,x ) / Math.PI * 180;
     }
 
+    public void calculateSpeed(){
+
+
+    }
+
 
     /**
      * Set turnrate for controls
@@ -87,6 +92,11 @@ public class Controls {
     public void setSpeed(double angSpeed, double lineSpeed){
         this.angSpeed=angSpeed;
         this.lineSpeed=lineSpeed;
+        try {
+            robotCom.requestPOST(angSpeed,lineSpeed);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -97,8 +107,11 @@ public class Controls {
     public void setDistance(double distance){
         this.distance = distance;
     }
+
+
     public void move(){
         try {
+            System.out.println(" MOVE ANG = " + angSpeed + " LINE = " + lineSpeed + " ANGLE "+ angle);
             robotCom.requestPOST(angle,getDirection(angSpeed,lineSpeed));
             Thread.sleep(1000);
         } catch (Exception e) {
