@@ -41,4 +41,12 @@ public class Position {
         this.y=y;
     }
 
+    public double getDistanceTo(Position p){
+        return Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
+    }
+
+    public double getBearingTo(Position p) {
+        return Math.atan2(p.y - y, p.x - x);
+    }
+
 }
