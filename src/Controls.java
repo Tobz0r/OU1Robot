@@ -59,10 +59,9 @@ public class Controls {
         oriX=oriPos.getW();
         oriY=oriPos.getZ();
         System.out.println(oriX + "" + oriY);
-        //angle = Math.atan2(yCord,xCord);
-        angle=getBearingAngle(oriX,oriY);
+        angle = Math.atan2(yCord,xCord);
         try {
-            robotCom.requestPOST(angle,getDirection(oriX,oriY));
+           // robotCom.requestPOST(angle,getDirection(oriX,oriY));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,25 +71,7 @@ public class Controls {
     public  boolean isDone(){
         return index==path.length;
     }
-    public double getDirection(double x, double y){
-        System.out.println("X = "+ x + " Y = " + y);
-        return Math.atan2(y,x ) / Math.PI * 180;
-    }
 
-    public double getBearingAngle(double x, double y){
-        double angle = 2 * Math.atan2(y, x);
-        return angle * (180 / Math.PI);
-    }
-    /**
-     * Set turnrate for controls
-     * @param x value to turn
-     * @param y value to turn
-     */
-    public void setTurnRate(double x, double y){
-        this.xTurnRate = x;
-        this.yTurnRate = y;
-
-    }
 
     /**
      * Generate a carrot point for robot to follow
@@ -162,5 +143,25 @@ public class Controls {
             e.printStackTrace();
         }
     }
+/**
+    public double getDirection(double x, double y){
+        System.out.println("X = "+ x + " Y = " + y);
+        return Math.atan2(y,x ) / Math.PI * 180;
+    }
 
+    public double getBearingAngle(double x, double y){
+        double angle = 2 * Math.atan2(y, x);
+        return angle * (180 / Math.PI);
+    }
+    **
+     * Set turnrate for controls
+     * @param x value to turn
+     * @param y value to turn
+     *
+    public void setTurnRate(double x, double y){
+        this.xTurnRate = x;
+        this.yTurnRate = y;
+
+    }
+**/
 }
