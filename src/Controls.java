@@ -48,14 +48,18 @@ public class Controls {
         System.out.println("DISTANCE " + distance);
         index++;
         double oriX=0,oriY=0;
+        QuadPosition oriPos=null;
         try {
-            oriX=robotCom.requestGET()[1].getX();
-            oriY=robotCom.requestGET()[1].getY();
+            oriPos=(QuadPosition)robotCom.requestGET()[1];
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        oriX=oriPos.getW();
+        oriY=oriPos.getZ();
         System.out.println(oriX + "" + oriY);
-        angle = Math.atan2(yCord,xCord);
+        //angle = Math.atan2(yCord,xCord);
+        angle=getBearingAngle(oriX,oriY);
         try {
             robotCom.requestPOST(angle,getDirection(oriX,oriY));
         } catch (Exception e) {
@@ -69,6 +73,11 @@ public class Controls {
     }
     public double getDirection(double x, double y){
         return Math.atan2(y,x ) / Math.PI * 180;
+    }
+
+    public double getBearingAngle(double x, double y){
+        double angle = 2 * Math.atan2(y, x);
+        return angle * (180 / Math.PI);
     }
 
     public void calculateSpeed(){
