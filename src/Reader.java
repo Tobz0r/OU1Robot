@@ -1,7 +1,10 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.deploy.util.ArrayUtil;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -15,10 +18,10 @@ public class Reader {
 
     }
 
-    public void readPath() throws IOException {
+    public Position[] getPath(String filePath) throws IOException {
         int nPoints;
 
-        File pathFile = new File("Path-around-table.json");
+        File pathFile = new File(filePath);
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 new FileInputStream(pathFile)));
         ObjectMapper mapper = new ObjectMapper();
@@ -37,13 +40,7 @@ public class Reader {
             index++;
 
         }
-    }
-
-    /**
-     * return array with positions
-     * @return array with posiitons
-     */
-    public Position[] getPaths(){
         return path;
     }
+
 }
