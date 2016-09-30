@@ -11,8 +11,7 @@ public class Controls {
     private int lenght;
     private int index;
     private RobotCommunication robotC;
-    private double distance;
-    private Position pos, carrotPoint;
+    private Position carrotPoint;
     private double OriantationError;
 
     public Controls(Position[] path, RobotCommunication robotC){
@@ -41,14 +40,14 @@ public class Controls {
     }
 
     public void makeMove(){
-        pos=getPosition();
+        Position pos = getPosition();
         if(carrotPoint==null){
             findCarrotPoint();
         }
         //check again to see if no carropoint could be found
         if(carrotPoint==null) return;
-        distance=pos.getDistanceTo(carrotPoint);
-        if(distance<1.0){
+        double distance = pos.getDistanceTo(carrotPoint);
+        if(distance <1.0){
             carrotPoint=null;
         }
         else {
@@ -87,8 +86,7 @@ public class Controls {
         }
 
         double[] coords = lr.getPosition();
-        Position pos = new Position(coords[0],coords[1]);
-        return pos;
+        return new Position(coords[0],coords[1]);
     }
     public double getBearing() {
         LocalizationResponse lr = new LocalizationResponse();
