@@ -1,52 +1,30 @@
-import javafx.geometry.Pos;
 
-/**
- * Created by sejiaw on 2016-09-23.
- */
 public class Position {
+   private double x, y;
 
+   public Position(double pos[]) {
+      this.x = pos[0];
+      this.y = pos[1];
+   }
 
-    double x,y;
+   public Position(double x, double y) {
+      this.x = x;
+      this.y = y;
+   }
 
-    public Position(){
+   public double getX() {
+      return x;
+   }
+   public double getY() {
+      return y;
+   }
 
-    }
-    public Position(double x,double y){
-        this.x=x;
-        this.y=y;
-    }
+   public double getDistanceTo(Position p){
+      return Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
+   }
 
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public String toString(){
-        return x + "," + y;
-    }
-
-    public void setStartPosition(double x, double y){
-        this.x=x;
-        this.y=y;
-    }
-
-    public double getDistanceTo(Position p){
-        return Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
-    }
-
-    public double getBearingTo(Position p) {
-        return Math.atan2(p.y - y, p.x - x);
-    }
-
+   public double getBearingTo(Position p)
+   {
+      return Math.atan2(p.y - y, p.x - x);
+   }
 }
