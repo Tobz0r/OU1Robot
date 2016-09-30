@@ -8,7 +8,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Created by sejiaw on 2016-09-23.
+ * Parser for json file to a mapobjekt
+ * @author Tobias Estefors, Thom Renström
  */
 public class Reader {
 
@@ -18,6 +19,12 @@ public class Reader {
 
     }
 
+    /**
+     * Parses a jsonfile and adds it to an array
+     * @param filePath the path to a jsonfile
+     * @return an array with Position objects of the file
+     * @throws IOException
+     */
     public Position[] getPath(String filePath) throws IOException {
         int nPoints;
 

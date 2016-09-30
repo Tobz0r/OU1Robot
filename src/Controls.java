@@ -1,9 +1,6 @@
-import javafx.geometry.Pos;
-
-import java.io.IOException;
-
 /**
- * Created by Tobz0r on 2016-09-30.
+ * Controls for the movement of the robot
+ * @author Tobias Estefors, Thom Renström
  */
 public class Controls {
 
@@ -22,6 +19,11 @@ public class Controls {
         carrotPoint=null;
         OriantationError=0;
     }
+
+    /**
+     * Checks if the robot is on its final point
+     * @return true if path is finished, else false
+     */
     public  boolean isDone(){
         if(index==lenght){
             setSpeed(0.0,0.0);
@@ -29,6 +31,11 @@ public class Controls {
         }
         return false;
     }
+
+    /**
+     * Takes a new point from the path, skips a point
+     * if its to close to the robot to save time
+     */
     private void findCarrotPoint(){
         while(carrotPoint==null && index!=lenght){
             carrotPoint=path[index];
@@ -39,6 +46,11 @@ public class Controls {
         }
     }
 
+    /**
+     * Moves the robot by calculating the angles of the robot orientation
+     * and the angle to the carrotpoint and takes the difference between
+     * the two angles
+     */
     public void makeMove(){
         Position pos = getPosition();
         if(carrotPoint==null){
@@ -59,13 +71,22 @@ public class Controls {
         }
     }
 
-
+    /**
+     * Calculates the diffrence between two nalges
+     * @param y the source angle
+     * @param x the target angle
+     * @return the diffrence
+     */
     private double diffBearing(double y, double x){
         return Math.atan2(Math.sin(x-y), Math.cos(x-y));
 
     }
 
-
+    /**
+     * Changes the speed for the robot
+     * @param linearSpeed the robots speed in a straight line
+     * @param angularSpeed the robots turnrate
+     */
     public void setSpeed(double linearSpeed, double angularSpeed) {
         DifferentialDriveRequest dr = new DifferentialDriveRequest();
         dr.setAngularSpeed(4*angularSpeed);
@@ -77,6 +98,10 @@ public class Controls {
         }
     }
 
+    /**
+     * Requests the robots current position
+     * @return the robots positon
+     */
     public Position getPosition() {
         LocalizationResponse lr = new LocalizationResponse();
         try {
@@ -88,6 +113,11 @@ public class Controls {
         double[] coords = lr.getPosition();
         return new Position(coords[0],coords[1]);
     }
+
+    /**
+     * Gets the robots orientation
+     * @return the robots orientation
+     */
     public double getBearing() {
         LocalizationResponse lr = new LocalizationResponse();
         try {
