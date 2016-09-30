@@ -55,7 +55,7 @@ public class Controls {
             double carrotAngle = pos.getBearingTo(carrotPoint);
             double robotAngle = getBearing();
             OriantationError= diffBearing(robotAngle, carrotAngle);
-            double speed = OriantationError > 1 ? 0 : 1;
+            double speed = OriantationError > (Math.PI/2) ? 0 :2;
             setSpeed(speed, OriantationError);
         }
     }
@@ -69,7 +69,7 @@ public class Controls {
 
     public void setSpeed(double linearSpeed, double angularSpeed) {
         DifferentialDriveRequest dr = new DifferentialDriveRequest();
-        dr.setAngularSpeed(angularSpeed);
+        dr.setAngularSpeed(4*angularSpeed);
         dr.setLinearSpeed(linearSpeed);
         try {
             robotC.putRequest(dr);
