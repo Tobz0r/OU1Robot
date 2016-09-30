@@ -1,14 +1,16 @@
 /**
- * Created by sejiaw on 2016-09-23.
+ * Timer for robot to clock time from start to finish
+ * @author dv13trm,dv13tes
  */
-import java.util.Timer;
 public class RobotTimer {
 
     private long startTime = 0;
     private long elapsedTime = 0;
     RobotTimer(){
-
     }
+    /**
+     * Starts timer, this will be called when robot starts
+     */
     public void clockStart(){
         startTime = System.currentTimeMillis();
     }
@@ -24,11 +26,7 @@ public class RobotTimer {
      * Stop clock then print out value of clock in seconds
      */
     public void endTime(){
-        //stoppa klockan
         clockStop();
-        //skriv ut tid
         System.out.println("Total time elapsed = " + elapsedTime +" seconds");
-
-
     }
 }

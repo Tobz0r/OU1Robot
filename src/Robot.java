@@ -1,16 +1,21 @@
 import java.io.IOException;
 
 /**
- * Created by Tobz0r on 2016-09-30.
+ * Robot class is used to create a new robot for robotsimulation.
+ * Then solve a path with given controls.
+ * @author dv13trm,dv13tes
  */
 public class Robot {
 
-    boolean running = false;
     RobotTimer timer = new RobotTimer();
     private Controls controls;
-    private boolean goalValue = false;
 
-
+    /**
+     * Constructor to create a robot
+     * @param host host for simulator
+     * @param port port for simulator
+     * @param path robots path
+     */
     public Robot(String host, int port, String path){
         RobotCommunication robotC=new RobotCommunication(host,port);
         Reader reader = new Reader();
@@ -20,6 +25,12 @@ public class Robot {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Run function for robot, will start time and move until
+     * goal is found
+     * @throws Exception Will be called when thread fail to sleep
+     */
     public void run() throws Exception {
         System.out.println("Robot started and taking time!");
         timer.clockStart();
