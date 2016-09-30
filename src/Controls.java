@@ -41,10 +41,8 @@ public class Controls {
     /**
      * Calculate angle for robot to turn
      */
-    public double calculateAngle(){
-        double deltaX=xCP-pos.getX();
-        double deltaY=yCP-pos.getY();
-        return Math.atan2(deltaY,deltaX);
+    public double calculateAngle(double x, double y){
+        return Math.atan2(y,x);
     }
 
     public  boolean isDone(){
@@ -117,16 +115,23 @@ public class Controls {
         double qy = getQY();
         double xcp = getCPX(index);
         double ycp = getCPY(index);
-        double angle = calculateAngle();
+        double angle;
+        angle = calculateAngle(xCP-pos.getX(),yCP-pos.getY());
         OriantationError = calculateDiffrence(qy,qx,xcp,ycp);
-
+        double qAngle;
+      //USLESS????  qAngle = calculateAngle(qx,qy);
         System.out.println("OE= "+OriantationError);
         while(!canIMove(OriantationError)){
             qx = getQX();
             qy = getQY();
-            angle = calculateAngle();
+            angle = calculateAngle(xCP-pos.getX(),yCP-pos.getY());
+            qAngle = calculateAngle(qx,qy);
+            if(qAngle ==angle){
+                System.out.println("ANGLE = "+angle);
+                System.out.println("Q = "+ qAngle);
+            }
             //  System.out.println("OE= "+OriantationError);
-            System.out.println("ANGLE = "+angle);
+
             //System.out.println("QX = "+qx + " QY= " +qy + " CPX = " + xcp + " CPY = " + ycp);
             try {
                 robotCom.requestPOST(0.5,0);
